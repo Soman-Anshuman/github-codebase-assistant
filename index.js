@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 
@@ -41,4 +41,4 @@ Question: ${userQuestion}
 }
 
 // Execute the function
-analyzeCode();
+await analyzeCode();
