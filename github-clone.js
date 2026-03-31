@@ -7,11 +7,7 @@ import os from 'node:os';
 // Convert the callback-based exec function into a Promise-based one
 const execAsync = promisify(exec);
 
-/**
- * Clones a GitHub repository into the system's temporary directory.
- * @param {string} repoUrl - The HTTPS URL of the GitHub repository.
- * @returns {Promise<string>} - The local path to the cloned repository.
- */
+// Clones a GitHub repository into the system's temporary directory.
 async function cloneRepository(repoUrl) {
     const repoName = repoUrl.split('/').pop().replace('.git', '');
     
@@ -38,10 +34,7 @@ async function cloneRepository(repoUrl) {
     }
 }
 
-/**
- * Deletes the cloned repository to free up disk space.
- * @param {string} directoryPath - The path to delete.
- */
+// Deletes the cloned repository to free up disk space.
 async function cleanupRepository(directoryPath) {
     console.log(`\nCleaning up: Deleting ${directoryPath}`);
     try {

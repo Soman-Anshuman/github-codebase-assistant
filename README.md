@@ -21,4 +21,4 @@ To make the ingestion process production-ready, the embedding pipeline will be u
 ### Repository Ingestion Strategy
 * **Shallow Cloning:** We use git clone --depth 1 to fetch only the latest codebase snapshot, bypassing unnecessary commit history to drastically reduce download time.
 
-* **Ephemeral Storage:** Repositories are cloned directly to the OS temporary directory (os.tmpdir()) and aggressively wiped via a finally block post-processing to prevent server disk space leaks.
+* **Temporary Storage:** Repositories are cloned directly to the OS temporary directory (os.tmpdir()) and aggressively wiped via a finally block post-processing to prevent server disk space leaks.
