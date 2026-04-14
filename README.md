@@ -22,3 +22,6 @@ To make the ingestion process production-ready, the embedding pipeline will be u
 * **Shallow Cloning:** We use git clone --depth 1 to fetch only the latest codebase snapshot, bypassing unnecessary commit history to drastically reduce download time.
 
 * **Temporary Storage:** Repositories are cloned directly to the OS temporary directory (os.tmpdir()) and aggressively wiped via a finally block post-processing to prevent server disk space leaks.
+
+### Code Storage tradeoff
+**Vector vs. Relational Data:** By putting the `text` inside the Pinecone `metadata` object, we are storing the raw code alongside the vector. This makes our retrieval pipeline incredibly fast because we don't have to do a secondary lookup in a Postgres database to fetch the code. The tradeoff is that Pinecone metadata is not meant for storing massive paragraphs, but for our 50-line chunks, it is well within limits.

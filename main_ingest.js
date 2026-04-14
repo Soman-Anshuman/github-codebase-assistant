@@ -5,6 +5,7 @@ import path from "node:path";
 import os from "node:os";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
+import { saveToVectorDB } from "./database.js";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ const ALLOWED_EXTENSIONS = new Set([
   ".go",
   ".java",
   ".md",
+  ".cpp",
 ]);
 const BATCH_SIZE = 20;
 const RATE_LIMIT_DELAY_MS = 2000;
@@ -138,6 +140,8 @@ async function generateEmbeddingsSafely(allCodeChunks) {
     const response = await ai.models.embedContent({
       model: "gemini-embedding-001",
       contents: textsToEmbed,
+      // Optimization: Reducing vector size from 3072 to 768 to save database space
+      config: { outputDimensionality: 768 },
     });
 
     const batchResults = batch.map((chunk, index) => ({
@@ -181,10 +185,11 @@ async function ingestRepo(repoUrl) {
     // Embed (with Batching)
     const finalizedData = await generateEmbeddingsSafely(allChunks);
 
-    // Database Save (Placeholder for next step)
+    // Database Save
     console.log(
       `[5/5] Ready to save ${finalizedData.length} vectors to the database.`,
     );
+    await saveToVectorDB(finalizedData);
 
     // For testing, just log the first result's ID and vector length
     console.log(`Sample vector length: ${finalizedData[0].vector.length}`);
@@ -199,4 +204,4 @@ async function ingestRepo(repoUrl) {
 }
 
 // calling main function
-await ingestRepo("https://github.com/debug-js/debug");
+await ingestRepo("https://github.com/Soman-Anshuman/STL");
