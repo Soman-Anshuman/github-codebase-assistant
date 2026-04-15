@@ -35,6 +35,7 @@ const ALLOWED_EXTENSIONS = new Set([
 ]);
 const BATCH_SIZE = 20;
 const RATE_LIMIT_DELAY_MS = 2000;
+const ANONYMOUS_SESSION_ID = "session_test_123";
 
 // Step 1: Clone & Cleanup
 async function cloneRepository(repoUrl) {
@@ -189,7 +190,7 @@ async function ingestRepo(repoUrl) {
     console.log(
       `[5/5] Ready to save ${finalizedData.length} vectors to the database.`,
     );
-    await saveToVectorDB(finalizedData);
+    await saveToVectorDB(finalizedData, ANONYMOUS_SESSION_ID);
 
     // For testing, just log the first result's ID and vector length
     console.log(`Sample vector length: ${finalizedData[0].vector.length}`);
@@ -204,4 +205,4 @@ async function ingestRepo(repoUrl) {
 }
 
 // calling main function
-await ingestRepo("https://github.com/Soman-Anshuman/STL");
+await ingestRepo("https://github.com/Soman-Anshuman/plotTwist-app");
